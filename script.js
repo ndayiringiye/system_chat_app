@@ -174,3 +174,62 @@ document.addEventListener('DOMContentLoaded', function() {
     
     scrollToBottom();
 });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const messagesContainer = document.getElementById('messages');
+            
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'mb-4 message-right';
+                    messageDiv.innerHTML = `
+                        <div class="flex items-start space-x-2 justify-end">
+                            <div class="bg-primary-600 rounded-2xl rounded-tr-md px-4 py-2 max-w-xs shadow-sm message-bubble">
+                                <p class="text-sm text-white">${message}</p>
+                                <span class="text-xs text-primary-200 mt-1 block">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    messagesContainer.appendChild(messageDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    messageInput.value = '';
+                    
+                    setTimeout(() => {
+                        const responseDiv = document.createElement('div');
+                        responseDiv.className = 'mb-4 message-left';
+                        responseDiv.innerHTML = `
+                            <div class="flex items-start space-x-2">
+                                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                                <div class="bg-white rounded-2xl rounded-tl-md px-4 py-2 max-w-xs shadow-sm message-bubble">
+                                    <p class="text-sm text-gray-800">That sounds great! 👍</p>
+                                    <span class="text-xs text-gray-500 mt-1 block">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                </div>
+                            </div>
+                        `;
+                        messagesContainer.appendChild(responseDiv);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 1500);
+                }
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(4px)';
+                    }, 100);
+                });
+            });
+        });
